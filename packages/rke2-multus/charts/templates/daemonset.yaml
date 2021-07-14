@@ -16,10 +16,14 @@ spec:
       tolerations:
       - operator: Exists
         effect: NoSchedule
+      - operator: Exists
+        effect: NoExecute
       serviceAccountName: multus
       initContainers:
       - name: cni-plugins
         image: {{ template "system_default_registry" . }}{{ .Values.cniplugins.image.repository }}:{{ .Values.cniplugins.image.tag }}
+        securityContext:
+          privileged: true
         volumeMounts:
         - name: cnibin
           mountPath: /host/opt/cni/bin
